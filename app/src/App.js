@@ -19,6 +19,12 @@ function App() {
       localStorage.setItem('pokemonList', JSON.stringify(updatedPokemonList));
     }
   }
+
+  const handleRemovePokemon = (pokemon) => {
+    const storedPokemonList = JSON.parse(localStorage.getItem('pokemonList')) || [];
+    const updatedPokemonList = storedPokemonList.filter((p) => p.name !== pokemon.name);
+    localStorage.setItem('pokemonList', JSON.stringify(updatedPokemonList));
+  };
  
 
   return (
@@ -38,6 +44,7 @@ function App() {
           {JSON.parse(localStorage.getItem('pokemonList'))?.map((pokemon) => (
             <li key={pokemon.name}>
               {pokemon.name}
+              <button onClick={() => handleRemovePokemon(pokemon)}>Retirer</button>
             </li>
           ))}
         </ul>
