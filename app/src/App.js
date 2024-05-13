@@ -11,7 +11,14 @@ function App() {
       .catch(error => console.log(error));
   }, []);
 
- 
+  const handleSelectPokemon = (pokemon) => {
+    const storedPokemonList = JSON.parse(localStorage.getItem('pokemonList')) || [];
+    const isPokemonAlreadyAdded = storedPokemonList.some((p) => p.name === pokemon.name);
+    if (!isPokemonAlreadyAdded) {
+      const updatedPokemonList = [...storedPokemonList, pokemon];
+      localStorage.setItem('pokemonList', JSON.stringify(updatedPokemonList));
+    }
+  }
  
 
   return (
@@ -20,7 +27,7 @@ function App() {
         {pokemonList.map((pokemon) => (
           <div key={pokemon.name}>
             {pokemon.name}
-          
+            <button onClick={() => handleSelectPokemon(pokemon)}>Ajouter</button>
           </div>
         ))}
       </div>
