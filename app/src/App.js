@@ -22,11 +22,7 @@ function App() {
   //   }
   // }
 
-  // const handleRemovePokemon = (pokemon) => {
-  //   const storedPokemonList = JSON.parse(localStorage.getItem('pokemonList')) || [];
-  //   const updatedPokemonList = storedPokemonList.filter((p) => p.name !== pokemon.name);
-  //   localStorage.setItem('pokemonList', JSON.stringify(updatedPokemonList));
-  // };
+
  
   // const handleRemoveAllPokemon = () => {
   //   localStorage.removeItem('pokemonList');
