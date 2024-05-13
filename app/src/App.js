@@ -26,6 +26,9 @@ function App() {
     localStorage.setItem('pokemonList', JSON.stringify(updatedPokemonList));
   };
  
+  const handleRemoveAllPokemon = () => {
+    localStorage.removeItem('pokemonList');
+  };
 
   return (
     <div className="App">
@@ -49,6 +52,7 @@ function App() {
           ))}
         </ul>
       </div>
+      <button onClick={handleRemoveAllPokemon}>Vider mon Pokedex</button>
     
     </div>
   );
