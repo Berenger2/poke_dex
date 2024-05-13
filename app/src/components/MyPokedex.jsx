@@ -10,14 +10,19 @@ function MyPokedex() {
     setSearchTerm(event.target.value);
   };
 
-const handleRemovePokemon = (pokemon) => {
+  const handleRemovePokemon = (pokemon) => {
     const storedPokemonList =
-        JSON.parse(localStorage.getItem("pokemonList")) || [];
+      JSON.parse(localStorage.getItem("pokemonList")) || [];
     const updatedPokemonList = storedPokemonList.filter(
-        (p) => p.name !== pokemon.name
+      (p) => p.name !== pokemon.name
     );
     localStorage.setItem("pokemonList", JSON.stringify(updatedPokemonList));
-    setFilteredPokemonList(updatedPokemonList); 
+    setFilteredPokemonList(updatedPokemonList);
+  };
+
+const handleRemoveAllPokemon = () => {
+    localStorage.removeItem("pokemonList");
+    setFilteredPokemonList([]);
 };
 
   React.useEffect(() => {
@@ -39,6 +44,7 @@ const handleRemovePokemon = (pokemon) => {
           <button onClick={() => handleRemovePokemon(pokemon)}>Retirer</button>
         </div>
       ))}
+      <button onClick={handleRemoveAllPokemon}>Vider Mon pokemon dex</button>
     </div>
   );
 }
