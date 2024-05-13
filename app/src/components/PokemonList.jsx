@@ -123,7 +123,6 @@ const PokemonList = () => {
       )}
       <button onClick={previousPage}>Page Precedente</button>
       <button onClick={nextPage}>Page suivante</button>
-       <MyPokedex />
     </div>
   );
 };

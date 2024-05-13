@@ -33,20 +33,27 @@ const handleRemoveAllPokemon = () => {
     setFilteredPokemonList(filteredList);
   }, [searchTerm]);
 
-  return (
-    <div>
-      <h2>Mon Pokedex</h2>
-      <PokemonFilter searchTerm={searchTerm} handleSearch={handleSearch} />
 
-      {filteredPokemonList.map((pokemon) => (
-        <div key={pokemon.name}>
-          <PokemonCard key={pokemon.name} pokemon={pokemon} />
-          <button onClick={() => handleRemovePokemon(pokemon)}>Retirer</button>
-        </div>
-      ))}
-      <button onClick={handleRemoveAllPokemon}>Vider Mon pokemon dex</button>
+    const handleShowDetails = (pokemon) => {
+        // Logic to handle showing details of the selected pokemon
+        console.log(pokemon.name);
+    };
+
+return (
+    <div>
+        <h2>Mon Pokedex</h2>
+        <PokemonFilter searchTerm={searchTerm} handleSearch={handleSearch} />
+
+        {filteredPokemonList.map((pokemon) => (
+            <div key={pokemon.name}>
+                <PokemonCard key={pokemon.name} pokemon={pokemon} />
+                <button onClick={() => handleRemovePokemon(pokemon)}>Retirer</button>
+                <button onClick={() => handleShowDetails(pokemon)}>Détails</button> 
+            </div>
+        ))}
+        <button onClick={handleRemoveAllPokemon}>Vider Mon pokemon dex</button>
     </div>
-  );
+);
 }
 
 export default MyPokedex;
