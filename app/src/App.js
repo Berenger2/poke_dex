@@ -1,11 +1,9 @@
 import "./App.css";
 import { Link, Route, Routes } from "react-router-dom";
 
-// import React, { useEffect, useState } from 'react';
 import PokemonList from "./components/PokemonList";
 import MyPokedex from "./components/MyPokedex";
-import ErrorPage from "./ErrorPage";
-// import About from './components/About'; // make sure to create this component
+// import ErrorPage from "./ErrorPage";
 
 function App() {
   const newLocal = (

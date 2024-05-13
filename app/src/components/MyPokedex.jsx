@@ -35,7 +35,6 @@ const handleRemoveAllPokemon = () => {
 
 
     const handleShowDetails = (pokemon) => {
-        // Logic to handle showing details of the selected pokemon
         console.log(pokemon.name);
     };
 

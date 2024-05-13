@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PokemonCard from "./PokemonCard";
 import PokemonFilter from "./PokemonFilter";
-import MyPokedex from "./MyPokedex";
 
 const PokemonList = () => {
   const [loading, setLoading] = useState(true);
@@ -80,19 +79,8 @@ const PokemonList = () => {
     }
   };
 
-  const handleRemovePokemon = (pokemon) => {
-    const storedPokemonList =
-      JSON.parse(localStorage.getItem("pokemonList")) || [];
-    const updatedPokemonList = storedPokemonList.filter(
-      (p) => p.name !== pokemon.name
-    );
-    localStorage.setItem("pokemonList", JSON.stringify(updatedPokemonList));
-  };
-
-  const handleRemoveAllPokemon = () => {
-    localStorage.removeItem("pokemonList");
-  };
-
+ 
+  
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
