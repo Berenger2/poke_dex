@@ -32,8 +32,16 @@ function App() {
         ))}
       </div>
 
-      <br />
-      
+      <div>
+        <h2>Mon Pokedex</h2>
+        <ul>
+          {JSON.parse(localStorage.getItem('pokemonList'))?.map((pokemon) => (
+            <li key={pokemon.name}>
+              {pokemon.name}
+            </li>
+          ))}
+        </ul>
+      </div>
     
     </div>
   );
