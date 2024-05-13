@@ -2,18 +2,22 @@ import React from 'react'
 
     function PokemonCard(props) {
       const { pokemon } = props;
+      // console.log(pokemon);
    
       return (
         <div>
           {pokemon && (
-        <div className=''>
-          <h2>{pokemon.name}</h2>
-          <img src={pokemon.sprites.front_default} alt={pokemon.name} />
-          <p>{pokemon.name}</p>
-        </div>
+            <div className=''>
+              <h2>{pokemon.name}</h2>
+              {pokemon.sprites && pokemon.sprites.front_default ? (
+                <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+              ) : (
+                <p>{pokemon.name}</p>
+              )}
+            </div>
           )}
         </div>
-      )
+      );
     }
 
     export default PokemonCard

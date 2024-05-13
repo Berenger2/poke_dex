@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import PokemonCard from "./PokemonCard";
 import PokemonFilter from "./PokemonFilter";
 
@@ -11,27 +12,32 @@ const PokemonList = () => {
   const [previousUrl, setPreviousUrl] = useState();
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
 
-    fetch("https://pokeapi.co/api/v2/pokemon?offset=20&limit=30")
-      .then((response) => response.json())
-      .then(async (data) => {
+      try {
+        const response = await axios.get(
+          "https://pokeapi.co/api/v2/pokemon?offset=20&limit=30"
+        );
+        const data = response.data;
         setNextUrl(data.next);
         const pokemonData = await Promise.all(
           data.results.map(async (pokemon) => {
-            const response = await fetch(pokemon.url);
-            const pokemonData = await response.json();
+            const response = await axios.get(pokemon.url);
+            const pokemonData = response.data;
             return pokemonData;
           })
         );
         setPokemonList(pokemonData);
         setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         setError(error.message);
         setLoading(false);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
   const nextPage = async () => {
@@ -41,27 +47,39 @@ const PokemonList = () => {
     setNextUrl(data.next);
     setPreviousUrl(data.previous);
 
-    data.results.forEach(async (pokemon) => {
-      const response = await fetch(pokemon.url);
-      const pokemonData = await response.json();
-      setPokemonList((prevList) => [...prevList, pokemonData]);
-    });
+    const newPokemonList = await Promise.all(
+      data.results.map(async (pokemon) => {
+        const response = await axios.get(pokemon.url);
+        const pokemonData = response.data;
+        return pokemonData;
+      })
+    );
+
+    setPokemonList(newPokemonList);
   };
 
   const previousPage = async () => {
     if (!previousUrl) return;
 
-    let res = await fetch(previousUrl);
-    let data = await res.json();
+    try {
+      const res = await axios.get(previousUrl);
+      const data = res.data;
 
-    setNextUrl(data.next);
-    setPreviousUrl(data.previous);
+      setNextUrl(data.next);
+      setPreviousUrl(data.previous);
 
-    data.results.forEach(async (pokemon) => {
-      const response = await fetch(pokemon.url);
-      const pokemonData = await response.json();
-      setPokemonList((prevList) => [...prevList, pokemonData]);
-    });
+      const newPokemonList = await Promise.all(
+        data.results.map(async (pokemon) => {
+          const response = await axios.get(pokemon.url);
+          const pokemonData = response.data;
+          return pokemonData;
+        })
+      );
+
+      setPokemonList(newPokemonList);
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const handleSelectPokemon = (pokemon) => {
@@ -73,14 +91,12 @@ const PokemonList = () => {
     if (isPokemonAlreadyAdded) {
       alert("Le pokemon existe déjà!");
     } else {
-      const updatedPokemonList = [...storedPokemonList, pokemon];
+      const updatedPokemonList = [...storedPokemonList, { name: pokemon.name, id: pokemon.id }];
       localStorage.setItem("pokemonList", JSON.stringify(updatedPokemonList));
       alert("Le pokemon a été ajouté avec succès!");
     }
   };
 
- 
-  
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
