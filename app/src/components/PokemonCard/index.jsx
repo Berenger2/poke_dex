@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { getPokemonImageUrl } from "../../services/api";
 import axios from "axios";
 import { PokeballMini } from "../Spinner";
+import { FaHeart } from "react-icons/fa";
+import { FaInfo } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 import {
   Card,
@@ -103,15 +106,15 @@ const PokemonCard = ({ pokemon }) => {
             <>
               {!isPokemonAlreadyAdded && (
                 <div className="mt-4" onClick={() => handleSelectPokemon(pokemon)}>
-                   
                   <CardGet className={pokemonType[0]}>
-                    <i className="heart icon" />
+                  <FaHeart />
                   </CardGet>
                 </div>
               )}
+              
               <div onClick={handleDetail}>
                 <CardInfo className={pokemonType[0]}>
-                  <i className="info icon" />
+                <FaInfo />
                 </CardInfo>
               </div>
               <CardDetails>{pokemonType.join(" / ")}</CardDetails>
@@ -125,13 +128,13 @@ const PokemonCard = ({ pokemon }) => {
 
               <div onClick={handleDetail}>
                 <CardInfo className={pokemonType[0]}>
-                  <i className="info icon" />
+                <FaInfo />
                 </CardInfo>
               </div>
 
               <div className="mt-4" onClick={() => handleRemovePokemon(pokemon)}>
                 <CardGet className={pokemonType[0]}>
-                  <i className="trash icon" />
+                  <FaRegTrashAlt/>
                 </CardGet>
               </div>
             </div>
