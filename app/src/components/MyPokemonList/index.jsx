@@ -5,49 +5,65 @@ import Search from "../Search";
 import axios from "axios";
 
 import { App } from "./styles";
+import Button from "react-bootstrap/esm/Button";
 
 const MyPokemonList = () => {
   const [pokemons, setPokemons] = useState([]);
+
+  const [filteredPokemonList, setFilteredPokemonList] = React.useState([]);
+  const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [updateList, setUpdateList] = React.useState(false);
+
   // const [totalPokemon] = useState(807);
   const [pokemonPerPage] = useState(54);
   const [currentPage, setCurrentPage] = useState(1);
-  const [query, setQuery] = useState("");
 
   useEffect(() => {
-    fetchPokemons();
+    // fetchPokemons();
+    const pokemonList = JSON.parse(localStorage.getItem("pokemonList")) || [];
+    const filteredList = pokemonList.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredPokemonList(filteredList);
 
+    filteredList.forEach((pokemon) => {
+      axios
+        .get(`https://pokeapi.co/api/v2/pokemon/${pokemon.id}`)
+        .then((response) => {
+          const updatedPokemon = { ...pokemon, ...response.data };
+          setFilteredPokemonList((prevList) =>
+            prevList.map((p) =>
+              p.id === updatedPokemon.id ? updatedPokemon : p
+            )
+          );
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log("Error fetching data for pokemon:", pokemon.name);
+        });
+    });
     return cleanApp;
-  }, [currentPage]);
+  }, [query, updateList, currentPage]);
 
-  const fetchPokemons = async () => {
-    try {
-      const pokemonList = JSON.parse(localStorage.getItem("pokemonList")) || [];
-      const filteredList = pokemonList.slice(
-        (currentPage - 1) * pokemonPerPage,
-        currentPage * pokemonPerPage
-      );
-      setPokemons((prevPokemons) => [...prevPokemons, ...filteredList]);
- 
-      filteredList.forEach((pokemon) => {
-        axios
-          .get(`https://pokeapi.co/api/v2/pokemon/${pokemon.id}`)
-          .then((response) => {
-            const updatedPokemon = { ...pokemon, ...response.data };
-            setPokemons((prevPokemons) =>
-              prevPokemons.map((p) =>
-                p.id === updatedPokemon.id ? updatedPokemon : p
-              )
-            );
-          })
-          .catch((error) => {
-            console.error("Error fetching data for pokemon:", pokemon.name);
-          });
-      });
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
+  const handleSearch = (event) => {
+    setQuery(event.target.value);
+  };
+
+  const handleRemovePokemon = (pokemon) => {
+    const storedPokemonList =
+      JSON.parse(localStorage.getItem("pokemonList")) || [];
+    const updatedPokemonList = storedPokemonList.filter(
+      (p) => p.name !== pokemon.name
+    );
+    localStorage.setItem("pokemonList", JSON.stringify(updatedPokemonList));
+    setFilteredPokemonList(updatedPokemonList);
+    setUpdateList((prevState) => !prevState);
+  };
+
+  const handleRemoveAllPokemon = () => {
+    localStorage.removeItem("pokemonList");
+    setFilteredPokemonList([]);
   };
 
   const cleanApp = () => {
@@ -55,28 +71,24 @@ const MyPokemonList = () => {
     setIsLoading(true);
   };
 
-  const renderPokemonsList = () => {
-    return pokemons
-      .filter((pokemon) => pokemon.name.includes(query))
-      .map((pokemon) => {
-        console.log(pokemon);
-        return (
-          <React.Fragment key={pokemon.name}>
-            <PokemonCard pokemon={pokemon} />
-          </React.Fragment>
-        );
-      });
-  };
-
   return isLoading ? (
     <Pokeball />
   ) : (
     <>
+      <Search searchTerm={query} handleSearch={handleSearch} />
 
-      <Search getQuery={(q) => setQuery(q)} />
-     
-      <App>{renderPokemonsList()}</App>
-
+      <App>
+        {filteredPokemonList.map((pokemon) => (
+          <div className="card" key={pokemon.name}>
+            <PokemonCard key={pokemon.name} pokemon={pokemon} />
+          </div>
+        ))}
+      </App>
+      <div className="d-flex justify-content-center mt-4" >
+        <Button variant="warning" size="lg" onClick={handleRemoveAllPokemon}>
+        Vider Mon pokemondex
+        </Button>
+    </div>
     </>
   );
 };
