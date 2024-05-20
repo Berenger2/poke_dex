@@ -9,12 +9,15 @@ import { App } from "./styles";
 import NavBar from "../NavBar";
 
 const PokemonList = () => {
-  const [pokemons, setPokemons] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [totalPokemon] = useState(807);
-  const [pokemonPerPage] = useState(54);
+  const [pokemons, setPokemons] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState("");
+
+  
+  // bon
+  const [totalPokemon] = useState(807);
+  const [pokemonPerPage] = useState(54);
 
   useEffect(() => {
     fetchPokemons();
@@ -30,13 +33,20 @@ const PokemonList = () => {
     }
   };
 
-  const renderPokemonsList = () => {
-    return pokemons
-      .filter(pokemon => pokemon.name.includes(query))
-      .map(pokemon => 
-    
-      <PokemonCard key={pokemon.name} pokemon={pokemon} />);
+  
+  const handleSearch = (event) => {
+    setQuery(event.target.value);
   };
+
+  const filteredPokemonList = pokemons
+  .filter((pokemon) => {
+    return pokemon.name.toLowerCase().includes(query.toLowerCase());
+  })
+  .reduce((unique, pokemon) => {
+    return unique.some((p) => p.name === pokemon.name)
+      ? unique
+      : [...unique, pokemon];
+  }, []);
 
   return isLoading ? (
     <Pokeball />
@@ -44,20 +54,25 @@ const PokemonList = () => {
     <>
      <NavBar />
       
-      <Search getQuery={(q) => setQuery(q)} />
-      
-        <InfiniteScroll
+      <Search searchTerm={query} handleSearch={handleSearch}/>
+      <div>
+      <InfiniteScroll
           dataLength={pokemons.length}
           next={() => setCurrentPage(currentPage + 1)}
           hasMore={pokemons.length < totalPokemon}
           loader={<h4>Loading...</h4>}
         >
             <App>
-            <PokemonCard key={pokemon.name} pokemon={pokemon}/>
-
-          {/* {renderPokemonsList()} */}
+            {filteredPokemonList.map((pokemon) => (
+            <div className="card" key={pokemon.name}>
+              <PokemonCard key={pokemon.name} pokemon={pokemon} />
+            </div>
+          ))}
+           
             </App>
         </InfiniteScroll>
+      </div>
+       
       
     </>
   );

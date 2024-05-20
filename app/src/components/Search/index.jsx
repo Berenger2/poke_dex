@@ -1,14 +1,8 @@
-import React, { useState } from "react";
+import React from 'react';
 import "./styles.css";
 
-const Search = ({ getQuery }) => {
-  const [text, setText] = useState("");
 
-  const onChange = (q) => {
-    setText(q);
-    getQuery(q);
-  };
- 
+const Search = ({ searchTerm, handleSearch }) => {
   return (
     <section className="search">
       <form>
@@ -16,12 +10,14 @@ const Search = ({ getQuery }) => {
           type="text"
           className="form-control"
           placeholder="Rechercher un Pokémon"
-          value={text}
-          onChange={(e) => onChange(e.target.value)}
+          value={searchTerm}
+          onChange={handleSearch}
           autoFocus
         />
       </form>
+
     </section>
+    
   );
 };
 
