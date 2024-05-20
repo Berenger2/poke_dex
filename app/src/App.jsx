@@ -3,7 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import Pokemons from "./pages/Pokemons";
+import Pokemons from "./components/PokemonList";
 import PokemonPage from "./pages/Pokemon";
 import MyPokedex from "./pages/MyPokedex";
 

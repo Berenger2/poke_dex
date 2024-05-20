@@ -4,7 +4,6 @@
 
 input[type="text"] {
   position: relative;
-
   display: block;
   padding: 10px;
   font-size: 20px;
@@ -13,4 +12,5 @@ input[type="text"] {
   width: 60%;
   margin: auto;
   background-color: #f1f1f1;
+  margin-top: 120px;
 }

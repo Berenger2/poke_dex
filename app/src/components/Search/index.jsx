@@ -14,7 +14,7 @@ const Search = ({ getQuery }) => {
       <form>
         <input
           type="text"
-          className="form-control mt-5"
+          className="form-control"
           placeholder="Rechercher un Pokémon"
           value={text}
           onChange={(e) => onChange(e.target.value)}

@@ -6,6 +6,7 @@ import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import { App } from "./styles";
+import NavBar from "../NavBar";
 
 const PokemonList = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -33,7 +34,7 @@ const PokemonList = () => {
     return pokemons
       .filter(pokemon => pokemon.name.includes(query))
       .map(pokemon => 
-      
+    
       <PokemonCard key={pokemon.name} pokemon={pokemon} />);
   };
 
@@ -41,6 +42,8 @@ const PokemonList = () => {
     <Pokeball />
   ) : (
     <>
+     <NavBar />
+      
       <Search getQuery={(q) => setQuery(q)} />
       
         <InfiniteScroll
@@ -50,8 +53,9 @@ const PokemonList = () => {
           loader={<h4>Loading...</h4>}
         >
             <App>
+            <PokemonCard key={pokemon.name} pokemon={pokemon}/>
 
-          {renderPokemonsList()}
+          {/* {renderPokemonsList()} */}
             </App>
         </InfiniteScroll>
       
