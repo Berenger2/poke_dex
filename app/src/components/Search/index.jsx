@@ -8,9 +8,7 @@ const Search = ({ getQuery }) => {
     setText(q);
     getQuery(q);
   };
-
-  console.log(text);
-
+ 
   return (
     <section className="search">
       <form>
